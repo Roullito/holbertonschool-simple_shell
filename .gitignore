@@ -4,9 +4,7 @@
 
 # Compiled binary
 a.out
-main
-shell
-myshell
+simple_shell
 
 # Editor files
 *~
@@ -33,3 +31,4 @@ tags
 
 # Temporary files
 *.tmp
+
