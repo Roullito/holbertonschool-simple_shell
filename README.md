@@ -38,7 +38,7 @@ This project consists of creating a simple UNIX command interpreter, similar to 
 
 ---
 
-##🎯[Learning Objectives](#learning-objectives)
+## 🎯[Learning Objectives](#learning-objectives)
 
 - Understand the history of Unix and its key contributors.
 - Know who designed the original Unix operating system and the UNIX shell.
