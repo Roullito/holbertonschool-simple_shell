@@ -57,6 +57,12 @@ char *_strtok(char *str, const char *delim)
 	return (token);
 }
 
+/**
+ * stock_args - Tokenizes a line into arguments
+ *
+ * @line: Pointer to the input line to split
+* Return: A pointer to the array of token strings (argv), or NULL on failure
+ */
 char **stock_args(char *line)
 {
 	int count = 0, i = 0;

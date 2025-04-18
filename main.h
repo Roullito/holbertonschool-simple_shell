@@ -23,5 +23,9 @@ int execute(char **argv, char **env);
 char *_which(char *cmd, char **env);
 int _strncmp(const char *s1, const char *s2, size_t n);
 int handle_builtin(char **argv);
+void free_argv(char **argv);
+int is_interactive(void);
+ssize_t get_input_line(char **line, size_t *len);
+void shell_loop(char **env);
 
 #endif
