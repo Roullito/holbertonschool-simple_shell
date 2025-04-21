@@ -53,7 +53,7 @@ int handle_builtin_or_execute(char **argv, char **env)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		write(2, "Command not found\n", 19);
+		write(2, "./shell: No such file or directory", 35);
 		return (0);
 	}
 
@@ -84,7 +84,7 @@ void shell_loop(char **env)
 	while (1)
 	{
 		if (is_interactive())
-			write(1, "cisfun$ ", 8);
+			write(1, "cisfun$ ", 9);
 
 		r = get_input_line(&line, &len);
 		if (r == -1)
