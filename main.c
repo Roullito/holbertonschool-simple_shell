@@ -39,7 +39,11 @@ int main(int ac, char **av)
 		pid = fork();
 		if (pid == 0)
 		{
-			char *argv[] = {line, NULL};
+			char *argv[2];
+
+			argv[0] = line;
+			argv[1] = NULL;
+
 			if (execve(line, argv, NULL) == -1)
 				perror(av[0]);
 			exit(EXIT_FAILURE);
