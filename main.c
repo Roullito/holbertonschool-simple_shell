@@ -53,7 +53,10 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		fprintf(stderr, "%s: 1: %s: not found\n", progname, argv[0]);
+		write(2, progname, strlen(progname));
+		write(2, ": 1: ", 5);
+		write(2, argv[0], strlen(argv[0]));
+		write(2, ": not found\n", 12);
 		return (0);
 	}
 
