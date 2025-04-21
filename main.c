@@ -38,7 +38,9 @@ int main(void)
 		pid = fork();
 		if (pid == 0) /* Child */
 		{
-			char *argv[] = {line, NULL};
+			char *argv[2];
+			argv[0] = line;
+			argv[1] = NULL;
 
 			if (execve(line, argv, NULL) == -1)
 				perror("./shell");
