@@ -1,20 +1,21 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
-extern char **environ;
 #define PROMPT "#cisfun$ "
 
-int main(void)
+int main(int ac, char **av)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	pid_t pid;
 	int status;
+
+	(void)ac;
 
 	while (1)
 	{
@@ -25,7 +26,7 @@ int main(void)
 		if (nread == -1)
 		{
 			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1); /* Handle Ctrl+D */
+				write(STDOUT_FILENO, "\n", 1);
 			break;
 		}
 
@@ -38,12 +39,9 @@ int main(void)
 		pid = fork();
 		if (pid == 0)
 		{
-			char *argv[2];
-			argv[0] = line;
-			argv[1] = NULL;
-
-			if (execve(line, argv, environ) == -1)
-				perror("./shell");
+			char *argv[] = {line, NULL};
+			if (execve(line, argv, NULL) == -1)
+				perror(av[0]);
 			exit(EXIT_FAILURE);
 		}
 		else if (pid > 0)
