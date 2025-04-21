@@ -53,7 +53,7 @@ int handle_builtin_or_execute(char **argv, char **env)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		fprintf(stderr, "%s: Command not found\n", argv[0]);
+		fprintf(stderr, "%s: 1: %s: not found\n", argv0, line);
 		return (0);
 	}
 
