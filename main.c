@@ -5,26 +5,22 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-/**
- * main - A simple shell that executes commands with no arguments.
- * Return: Always 0 on success, -1 on failure.
- */
-
 extern char **environ;
 
-int main(void)
+int main(int ac, char **av)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	pid_t pid;
 	int status;
-	char *argv[2];
+
+	(void)ac;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "#cisfun$ ", 10);
+			write(STDOUT_FILENO, "#cisfun$ ", 9);
 
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
@@ -40,20 +36,27 @@ int main(void)
 		if (line[0] == '\0')
 			continue;
 
-		argv[0] = line;
-		argv[1] = NULL;
-
 		pid = fork();
 		if (pid == 0)
 		{
-			execve(argv[0], argv, environ);
-			perror(argv[0]);
-			exit(EXIT_FAILURE);
+			char *argv[2];
+			argv[0] = line;
+			argv[1] = NULL;
+
+			if (execve(argv[0], argv, environ) == -1)
+			{
+				perror(av[0]);
+				exit(EXIT_FAILURE);
+			}
 		}
 		else if (pid > 0)
+		{
 			wait(&status);
+		}
 		else
+		{
 			perror("fork");
+		}
 	}
 
 	free(line);
