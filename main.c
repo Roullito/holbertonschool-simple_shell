@@ -1,62 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "shell.h"
 
-extern char **environ;
-
-int main(int ac, char **av)
+/**
+ * main - Entry point for the simple shell
+ * @argc: Argument count
+ * @argv: Argument vector
+ *
+ * Return: Always 0 (Success)
+ */
+int main(int argc, char **argv)
 {
 	char *line = NULL;
 	size_t len = 0;
-	ssize_t nread;
-	pid_t pid;
-	int status;
+	ssize_t read;
 
-	(void)ac;
+	(void)argc;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "#cisfun$ ", 9);
+			prompt_display();
 
-		nread = getline(&line, &len, stdin);
-		if (nread == -1)
+		read = getline(&line, &len, stdin);
+		if (read == -1) /* Ctrl+D */
 		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			break;
+			free(line);
+			exit(0);
 		}
 
-		if (line[nread - 1] == '\n')
-			line[nread - 1] = '\0';
+		/* Remove trailing newline */
+		if (line[read - 1] == '\n')
+			line[read - 1] = '\0';
 
-		if (line[0] == '\0')
-			continue;
-
-		pid = fork();
-		if (pid == 0)
-		{
-			char *argv[2];
-			argv[0] = line;
-			argv[1] = NULL;
-
-			if (execve(argv[0], argv, environ) == -1)
-			{
-				perror(av[0]);
-				exit(EXIT_FAILURE);
-			}
-		}
-		else if (pid > 0)
-		{
-			wait(&status);
-		}
-		else
-		{
-			perror("fork");
-		}
+		if (line[0] != '\0')
+			execute_command(line, argv);
 	}
 
 	free(line);
