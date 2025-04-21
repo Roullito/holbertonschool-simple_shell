@@ -43,7 +43,7 @@ int main(void)
 			argv[1] = NULL;
 
 			if (execve(line, argv, environ) == -1)
-				perror("./shell_shell");
+				perror("./shell");
 			exit(EXIT_FAILURE);
 		}
 		else if (pid > 0)
