@@ -53,7 +53,7 @@ int handle_builtin_or_execute(char **argv, char **env)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		write(2, "./shell: No such file or directory\n", 37);
+		printf("./shell: No such file or directory\n");
 		return (0);
 	}
 
