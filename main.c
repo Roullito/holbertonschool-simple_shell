@@ -5,12 +5,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+extern char **environ;
 #define PROMPT "#cisfun$ "
 
-/**
- * main - Minimal shell for exercise 0 (no PATH, no builtins)
- * Return: Always 0
- */
 int main(void)
 {
 	char *line = NULL;
@@ -21,36 +18,40 @@ int main(void)
 
 	while (1)
 	{
-		write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
 
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
-			free(line);
-			write(STDOUT_FILENO, "\n", 1); /* Handle Ctrl+D */
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1); /* Handle Ctrl+D */
 			break;
 		}
 
-		/* Remove newline */
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
+		if (line[0] == '\0')
+			continue;
+
 		pid = fork();
-		if (pid == 0) /* Child */
+		if (pid == 0)
 		{
 			char *argv[2];
 			argv[0] = line;
 			argv[1] = NULL;
 
-			if (execve(line, argv, NULL) == -1)
+			if (execve(line, argv, environ) == -1)
 				perror("./shell");
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
-		else if (pid > 0) /* Parent */
+		else if (pid > 0)
 			wait(&status);
 		else
 			perror("fork");
 	}
 
+	free(line);
 	return (0);
 }
