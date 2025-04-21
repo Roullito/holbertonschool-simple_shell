@@ -5,22 +5,26 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define PROMPT "#cisfun$ "
+/**
+ * main - A simple shell that executes commands with no arguments.
+ * Return: Always 0 on success, -1 on failure.
+ */
 
-int main(int ac, char **av)
+extern char **environ;
+
+int main(void)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	pid_t pid;
 	int status;
-
-	(void)ac;
+	char *argv[2];
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
+			write(STDOUT_FILENO, "#cisfun$ ", 10);
 
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
@@ -36,16 +40,14 @@ int main(int ac, char **av)
 		if (line[0] == '\0')
 			continue;
 
+		argv[0] = line;
+		argv[1] = NULL;
+
 		pid = fork();
 		if (pid == 0)
 		{
-			char *argv[2];
-
-			argv[0] = line;
-			argv[1] = NULL;
-
-			if (execve(line, argv, NULL) == -1)
-				perror(av[0]);
+			execve(argv[0], argv, environ);
+			perror(argv[0]);
 			exit(EXIT_FAILURE);
 		}
 		else if (pid > 0)
