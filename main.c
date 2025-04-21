@@ -57,7 +57,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 		write(2, ": 1: ", 5);
 		write(2, argv[0], strlen(argv[0]));
 		write(2, ": not found\n", 12);
-		return (0);
+		exit(127);
 	}
 
 	if (cmd_path != argv[0])
