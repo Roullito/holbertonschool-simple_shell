@@ -43,7 +43,7 @@ ssize_t get_input_line(char **line, size_t *len)
  * Return: -1 if the command is a built-in that requests exit,
  * 0 otherwise.
  */
-int handle_builtin_or_execute(char **argv, char **env)
+int handle_builtin_or_execute(char **argv, char **env, char *progname)
 {
 	char *cmd_path;
 
@@ -53,7 +53,7 @@ int handle_builtin_or_execute(char **argv, char **env)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		fprintf(stderr, "%s: 1: %s: not found\n", argv0, line);
+		fprintf(stderr, "%s: 1: %s: not found\n", progname, argv[0]);
 		return (0);
 	}
 
@@ -74,7 +74,7 @@ int handle_builtin_or_execute(char **argv, char **env)
  *
  * Return: Nothing
  */
-void shell_loop(char **env)
+void shell_loop(char **env, char *progname)
 {
 	char *line = NULL;
 	char **argv;
@@ -84,7 +84,7 @@ void shell_loop(char **env)
 	while (1)
 	{
 		if (is_interactive())
-			write(1, "cisfun$ ", 9);
+			write(1, "#cisfun$ ", 9);
 
 		r = get_input_line(&line, &len);
 		if (r == -1)
@@ -93,7 +93,7 @@ void shell_loop(char **env)
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			if (handle_builtin_or_execute(argv, env) == -1)
+			if (handle_builtin_or_execute(argv, env, progname) == -1)
 			{
 				free_argv(argv);
 				break;
@@ -116,9 +116,7 @@ void shell_loop(char **env)
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
-	(void)av;
-
-	shell_loop(env);
+	shell_loop(env, av[0]);
 
 	return (0);
 }
