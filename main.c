@@ -6,7 +6,7 @@
  */
 int is_interactive(void)
 {
-	return (isatty(STDIN_FILENO));
+	return (isatty(0));
 }
 
 /**
@@ -20,7 +20,7 @@ ssize_t get_input_line(char **line, size_t *len)
 {
 	ssize_t r;
 
-	r = _getline(line, len, 0);
+	r = getline(line, len, stdin);
 		if (r == -1)
 		{
 			if (is_interactive())
