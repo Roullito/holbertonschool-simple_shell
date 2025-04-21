@@ -1,4 +1,3 @@
-```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,6 +9,9 @@
  * main - A simple shell that executes commands with no arguments.
  * Return: Always 0 on success, -1 on failure.
  */
+
+extern char **environ;
+
 int main(void)
 {
 	char *line = NULL;
@@ -27,7 +29,6 @@ int main(void)
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
-			free(line);
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
 			break;
