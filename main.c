@@ -84,7 +84,7 @@ void shell_loop(char **env)
 	while (1)
 	{
 		if (is_interactive())
-			write(1, "$ ", 2);
+			write(1, "cisfun$ ", 8);
 
 		r = get_input_line(&line, &len);
 		if (r == -1)
