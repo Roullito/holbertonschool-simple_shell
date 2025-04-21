@@ -26,6 +26,7 @@ int handle_builtin(char **argv);
 void free_argv(char **argv);
 int is_interactive(void);
 ssize_t get_input_line(char **line, size_t *len);
-void shell_loop(char **env);
+void shell_loop(char **env, char *progname);
+int handle_builtin_or_execute(char **argv, char **env, char *progname);
 
 #endif
