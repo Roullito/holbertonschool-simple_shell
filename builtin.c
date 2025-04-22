@@ -25,6 +25,9 @@ int builtin_env(char **argv, char **env)
 {
 	int i;
 	(void)argv;
+
+	if (!env)
+		return (1);
 	for (i = 0; env[i]; i++)
 		printf("%s\n", env[i]);
 	return (1);
