@@ -101,7 +101,8 @@ int shell_loop(char **env, char *progname, int *exit_status)
 			if (cmd_status == -1)
 			{
 				free_argv(argv);
-				break;
+				free(line);
+				return (-1);
 			}
 			free_argv(argv);
 		}
@@ -129,7 +130,8 @@ int main(int ac, char **av, char **env)
 	int exit_status = 0;
 
 	(void)ac;
-	shell_loop(env, av[0], &exit_status);
+	if (shell_loop(env, av[0], &exit_status) == -1)
+		return (exit_status);
 
 	return (exit_status);
 }
