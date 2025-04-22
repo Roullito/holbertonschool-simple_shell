@@ -17,11 +17,8 @@
 typedef struct builtin_s
 {
 	char *name;
-	int (*func)(char **argv, char **env);
+	int (*func)(char **argv, char **env, char *line);
 } builtin_t;
-
-int builtin_exit(char **argv, char **env);
-int builtin_env(char **argv, char **env);
 
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 char *_strtok(char *str, const char *delim);
@@ -39,12 +36,15 @@ int _check_direct_path(char *filename);
 char *_extract_path(char **env);
 char *_search_in_path(char *path_str, char *filename);
 int _strncmp(const char *s1, const char *s2, size_t n);
-int handle_builtin(char **argv, char **env);
+int handle_builtin(char **argv, char **env, char *progname, char *line);
 void free_argv(char **argv);
 int is_interactive(void);
 ssize_t get_input_line(char **line, size_t *len);
 int shell_loop(char **env, char *progname, int *exit_status);
-int handle_builtin_or_execute(char **argv, char **env, char *progname);
+int handle_builtin_or_execute(char **argv, char **env, char *progname,
+	char *line);
 int is_number(const char *str);
+int builtin_exit(char **argv, char **env, char *line);
+int builtin_env(char **argv, char **env, char *line);
 
 #endif

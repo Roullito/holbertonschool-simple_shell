@@ -34,8 +34,9 @@ int execute(char **argv, char **env)
 			perror("waitpid");
 			return (1);
 		}
-		
-		return (WEXITSTATUS(status));
+
+		return (WEXITSTATUS(status) == 0 ? 0 : 2);
 	}
+
 	return (1);
 }

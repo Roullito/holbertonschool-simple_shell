@@ -42,7 +42,8 @@ ssize_t get_input_line(char **line, size_t *len)
  * Return: -1 if the command is a built-in that requests exit,
  * 0 otherwise.
 */
-int handle_builtin_or_execute(char **argv, char **env, char *progname)
+int handle_builtin_or_execute(char **argv, char **env, char *progname,
+	char *line)
 {
 	char *cmd_path;
 	int exec_status;
@@ -50,7 +51,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	if (!argv || !argv[0] || !env || !progname)
 		return (0);
 
-	if (handle_builtin(argv, env) == -1)
+	if (handle_builtin(argv, env, progname, line) == -1)
 		return (-1);
 
 	cmd_path = _which(argv[0], env);
@@ -96,13 +97,12 @@ int shell_loop(char **env, char *progname, int *exit_status)
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			cmd_status = handle_builtin_or_execute(argv, env, progname);
+			cmd_status = handle_builtin_or_execute(argv, env, progname, line);
 			*exit_status = cmd_status;
 			if (cmd_status == -1)
 			{
 				free_argv(argv);
-				free(line);
-				return (-1);
+				break;
 			}
 			free_argv(argv);
 		}

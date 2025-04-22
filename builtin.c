@@ -7,7 +7,7 @@
  *
  * Return: -1 to indicate shell termination
  */
-int builtin_exit(char **argv, char **env)
+int builtin_exit(char **argv, char **env, char *line)
 {
 	int exit_status = 0;
 
@@ -17,6 +17,7 @@ int builtin_exit(char **argv, char **env)
 		exit_status = atoi(argv[1]);
 
 	free_argv(argv);
+	free(line);
 	exit(exit_status);
 }
 
@@ -27,9 +28,10 @@ int builtin_exit(char **argv, char **env)
  *
  * Return: 1 to indicate the command was handled
  */
-int builtin_env(char **argv, char **env)
+int builtin_env(char **argv, char **env, char *line)
 {
 	int i;
+	(void)line;
 
 	if (argv[1])
 		return (0);
@@ -49,7 +51,7 @@ int builtin_env(char **argv, char **env)
  *
  * Return: -1 if "exit", 1 if a builtin was handled, 0 otherwise
  */
-int handle_builtin(char **argv, char **env)
+int handle_builtin(char **argv, char **env, char *progname, char *line)
 {
 	int i, ret;
 
@@ -59,6 +61,8 @@ int handle_builtin(char **argv, char **env)
 		{NULL, NULL}
 	};
 
+	(void)progname;
+	
 	if (!argv || !argv[0])
 		return (0);
 
@@ -66,7 +70,7 @@ int handle_builtin(char **argv, char **env)
 	{
 		if (strcmp(argv[0], builtins[i].name) == 0)
 		{
-			ret = builtins[i].func(argv, env);
+			ret = builtins[i].func(argv, env, line);
 			return (ret);
 		}
 	}
