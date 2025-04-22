@@ -9,9 +9,20 @@
  */
 int builtin_exit(char **argv, char **env)
 {
-	(void)argv;
+	int exit_status = 0;
+
 	(void)env;
-	return (-1);
+
+	if (argv[1])
+	{
+		exit_status = atoi(argv[1]);
+		if (exit_status < 0 || exit_status > 255)
+		{
+			fprintf(stderr, "exit: invalid exit status %s\n", argv[1]);
+			return (1);
+		}
+	}
+	exit(exit_status);
 }
 
 /**
@@ -30,6 +41,7 @@ int builtin_env(char **argv, char **env)
 		return (1);
 	for (i = 0; env[i]; i++)
 		printf("%s\n", env[i]);
+
 	return (1);
 }
 
@@ -42,18 +54,25 @@ int builtin_env(char **argv, char **env)
  */
 int handle_builtin(char **argv, char **env)
 {
-	int i;
+	int i, ret;
+
 	builtin_t builtins[] = {
 		{"exit", builtin_exit},
 		{"env", builtin_env},
 		{NULL, NULL}
 	};
+
 	if (!argv || !argv[0])
 		return (0);
+
 	for (i = 0; builtins[i].name; i++)
 	{
 		if (strcmp(argv[0], builtins[i].name) == 0)
-			return (builtins[i].func(argv, env));
+		{
+			ret = builtins[i].func(argv, env);
+			return (ret);
+		}
 	}
+
 	return (0);
 }

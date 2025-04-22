@@ -57,7 +57,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	if (cmd_path == NULL)
 	{
 		fprintf(stderr, "%s: command '%s' not found\n", progname, argv[0]);
-		return (0);
+		return (127);
 	}
 
 	if (cmd_path != argv[0])
@@ -67,11 +67,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	}
 
 	exec_status = execute(argv, env);
-	if (exec_status != 0)
-	{
-		return (0);
-	}
-	return (0);
+	return (exec_status);
 }
 /**
  * shell_loop - Main loop of the shell
@@ -99,7 +95,7 @@ void shell_loop(char **env, char *progname)
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			if (handle_builtin_or_execute(argv, env, progname) == -1)
+			if ((handle_builtin_or_execute(argv, env, progname)) == -1)
 			{
 				free_argv(argv);
 				break;
