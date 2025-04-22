@@ -27,13 +27,24 @@ int execute(char **argv, char **env)
 		if (execve(argv[0], argv, env) == -1)
 		{
 			perror("execve");
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 
 	else
 	{
-		wait(&status);
+		/* Parent process */
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid");
+			return (1);
+		}
+
+		/* Return the actual exit status of the command */
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
 	}
 
 	return (0);

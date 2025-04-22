@@ -6,7 +6,7 @@
  */
 int is_interactive(void)
 {
-	return (isatty(STDIN_FILENO));
+	return (isatty(0));
 }
 
 /**
@@ -20,16 +20,19 @@ ssize_t get_input_line(char **line, size_t *len)
 {
 	ssize_t r;
 
-	r = _getline(line, len, 0);
-		if (r == -1)
-		{
-			if (is_interactive())
-				write(1, "\n", 1);
-			return (-1);
-		}
+	if (!line || !len)
+		return (-1);
 
-		if (r > 0 && (*line)[r - 1] == '\n')
-			(*line)[r - 1] = '\0';
+	r = _getline(line, len, 0);
+	if (r == -1)
+	{
+		if (is_interactive())
+			write(1, "\n", 1);
+		return (-1);
+	}
+
+	if (r > 0 && (*line)[r - 1] == '\n')
+		(*line)[r - 1] = '\0';
 
 	return (r);
 }
@@ -46,6 +49,10 @@ ssize_t get_input_line(char **line, size_t *len)
 int handle_builtin_or_execute(char **argv, char **env, char *progname)
 {
 	char *cmd_path;
+	int exec_status;
+
+	if (!argv || !argv[0] || !env || !progname)
+		return (0);
 
 	if (handle_builtin(argv) == -1)
 		return (-1);
@@ -63,7 +70,9 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 		argv[0] = cmd_path;
 	}
 
-	execute(argv, env);
+	exec_status = execute(argv, env);
+	if (exec_status != 0)
+		return (0);
 
 	return (0);
 }
@@ -77,7 +86,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 void shell_loop(char **env, char *progname)
 {
 	char *line = NULL;
-	char **argv;
+	char **argv = NULL;
 	size_t len = 0;
 	ssize_t r;
 
@@ -90,6 +99,9 @@ void shell_loop(char **env, char *progname)
 		if (r == -1)
 			break;
 
+		if (r == 0 || line[0] == '\0')
+			continue;
+
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
@@ -100,9 +112,11 @@ void shell_loop(char **env, char *progname)
 			}
 			free_argv(argv);
 		}
+		else if (argv != NULL)
+			free_argv(argv);
 	}
-
-	free(line);
+	if (line)
+		free(line);
 }
 
 /**
@@ -115,8 +129,10 @@ void shell_loop(char **env, char *progname)
  */
 int main(int ac, char **av, char **env)
 {
+	int status = 0;
+
 	(void)ac;
 	shell_loop(env, av[0]);
 
-	return (0);
+	return (status);
 }
