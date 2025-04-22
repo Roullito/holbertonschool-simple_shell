@@ -16,6 +16,7 @@ int builtin_exit(char **argv, char **env)
 	if (argv[1])
 		exit_status = atoi(argv[1]);
 
+	free_argv(argv);
 	exit(exit_status);
 }
 

@@ -34,13 +34,8 @@ int execute(char **argv, char **env)
 			perror("waitpid");
 			return (1);
 		}
-
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			return (128 + WTERMSIG(status));
-		else
-			return (1);
+		
+		return (WEXITSTATUS(status));
 	}
-	return (0);
+	return (1);
 }
