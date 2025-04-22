@@ -11,7 +11,7 @@ int execute(char **argv, char **env)
 	int status;
 	pid_t pid;
 
-	if (argv == NULL || argv[0] == NULL)
+	if (argv == NULL || argv[0] == NULL || env == NULL)
 		return (1);
 	pid = fork();
 	if (pid == -1)
@@ -39,6 +39,8 @@ int execute(char **argv, char **env)
 			return (WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			return (128 + WTERMSIG(status));
+		else
+			return (1);
 	}
-	return (1);
+	return (0);
 }

@@ -66,7 +66,7 @@ char *_strtok(char *str, const char *delim)
 char **stock_args(char *line)
 {
 	int count = 0, i = 0;
-	char *cp_line, *cp_line2, *token, **argv;
+	char *cp_line = NULL, *cp_line2 = NULL, *token = NULL, **argv = NULL;
 
 	if (line == NULL)
 		return (NULL);
@@ -78,12 +78,10 @@ char **stock_args(char *line)
 	{
 		count++;
 		token = _strtok(NULL, " "); }
+	free(cp_line);
 	argv = malloc(sizeof(char *) * (count + 1));
 	if (argv == NULL)
-	{
-		free(cp_line);
-		return (NULL); }
-	free(cp_line);
+		return (NULL);
 	cp_line2 = _strdup(line);
 	if (cp_line2 == NULL)
 	{

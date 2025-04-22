@@ -76,12 +76,13 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
  *
  * Return: Nothing
 */
-void shell_loop(char **env, char *progname)
+int shell_loop(char **env, char *progname, int *exit_status)
 {
 	char *line = NULL;
 	char **argv = NULL;
 	size_t len = 0;
 	ssize_t r;
+	int cmd_status;
 
 	while (1)
 	{
@@ -95,7 +96,9 @@ void shell_loop(char **env, char *progname)
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			if ((handle_builtin_or_execute(argv, env, progname)) == -1)
+			cmd_status = handle_builtin_or_execute(argv, env, progname);
+			*exit_status = cmd_status;
+			if (cmd_status == -1)
 			{
 				free_argv(argv);
 				break;
@@ -109,7 +112,10 @@ void shell_loop(char **env, char *progname)
 	}
 	if (line)
 		free(line);
+
+	return (0);
 }
+
 /**
  * main - Entry point of our custom shell
  * @ac: Argument count (unused)
@@ -120,10 +126,10 @@ void shell_loop(char **env, char *progname)
 */
 int main(int ac, char **av, char **env)
 {
-	int status = 0;
+	int exit_status = 0;
 
 	(void)ac;
+	shell_loop(env, av[0], &exit_status);
 
-	shell_loop(env, av[0]);
-	return (status);
+	return (exit_status);
 }
