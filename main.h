@@ -25,7 +25,7 @@ int _check_direct_path(char *filename);
 char *_extract_path(char **env);
 char *_search_in_path(char *path_str, char *filename);
 int _strncmp(const char *s1, const char *s2, size_t n);
-int handle_builtin(char **argv);
+int handle_builtin(char **argv, char **env);
 void free_argv(char **argv);
 int is_interactive(void);
 ssize_t get_input_line(char **line, size_t *len);

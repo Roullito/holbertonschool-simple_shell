@@ -50,7 +50,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	if (!argv || !argv[0] || !env || !progname)
 		return (0);
 
-	if (handle_builtin(argv) == -1)
+	if (handle_builtin(argv, env) == -1)
 		return (-1);
 
 	cmd_path = _which(argv[0], env);
