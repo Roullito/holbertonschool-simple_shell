@@ -1,28 +1,6 @@
 #include "main.h"
 
 /**
- * is_number - Checks if a string represents a valid integer
- * @str: String to check
- *
- * Return: 1 if the string is a valid number, 0 otherwise
- */
-int is_number(const char *str)
-{
-	int i = 0;
-
-	if (!str)
-		return (0);
-	if (str[0] == '+' || str[0] == '-')
-		i++;
-	for (; str[i]; i++)
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-	}
-	return (1);
-}
-
-/**
  * builtin_exit - Handle the "exit" builtin command
  * @argv: Array of command arguments
  * @env: Array of environment variables
@@ -36,15 +14,7 @@ int builtin_exit(char **argv, char **env)
 	(void)env;
 
 	if (argv[1])
-	{
-		if (!is_number(argv[1]))
-		{
-			fprintf(stderr, "exit: Illegal number: %s\n", argv[1]);
-			return (2);
-		}
-
 		exit_status = atoi(argv[1]);
-	}
 
 	exit(exit_status);
 }
@@ -59,7 +29,9 @@ int builtin_exit(char **argv, char **env)
 int builtin_env(char **argv, char **env)
 {
 	int i;
-	(void)argv;
+
+	if (argv[1])
+		return (0);
 
 	if (!env)
 		return (1);
