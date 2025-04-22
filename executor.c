@@ -1,33 +1,38 @@
-#include "shell.h"
-
+#include "main.h"
 /**
- * execute_command - Fork and execute a command
- * @command: The command to execute
- * @argv: Program arguments
+ * execute - Creates a child process to execute a command
+ * @argv: Array of strings representing the command and its arguments
+ * @env: Environment variables
+ *
+ * Return: the exit status of the child process, or 1 on fork error
  */
-void execute_command(char *command, char **argv)
+int execute(char **argv, char **env)
 {
-	pid_t pid;
 	int status;
-	char *args[2];
-
-	args[0] = command;
-	args[1] = NULL;
-
+	pid_t pid;
+	if (argv == NULL || argv[0] == NULL)
+		return (1);
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("Error:");
-		exit(1);
+		perror("fork");
+		return (1);
 	}
-	else if (pid == 0)
+	if (pid == 0)
 	{
-		if (execve(command, args, environ) == -1)
+		if (execve(argv[0], argv, env) == -1)
 		{
-			print_error(argv[0], command);
+			perror("execve");
 			exit(127);
 		}
 	}
 	else
+	{
 		wait(&status);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else
+			return (1);
+	}
+	return (0);
 }
