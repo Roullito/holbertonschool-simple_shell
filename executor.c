@@ -1,15 +1,16 @@
 #include "main.h"
+
 /**
- * execute - Creates a child process to execute a command
- * @argv: Array of strings representing the command and its arguments
- * @env: Environment variables
- *
- * Return: the exit status of the child process, or 1 on fork error
- */
+* execute - Creates a child process to execute a command
+* @argv: Array of strings representing the command and its arguments
+* @env: Environment variables
+* Return: Exit status of the command, or 127 on execution failure
+*/
 int execute(char **argv, char **env)
 {
 	int status;
 	pid_t pid;
+	
 	if (argv == NULL || argv[0] == NULL)
 		return (1);
 	pid = fork();
@@ -28,11 +29,16 @@ int execute(char **argv, char **env)
 	}
 	else
 	{
-		wait(&status);
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid");
+			return (1);
+		}
+
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
-		else
-			return (1);
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
 	}
 	return (0);
 }

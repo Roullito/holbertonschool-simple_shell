@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * _getline - Reads a line from a file descriptor (stdin by default)
  *            character by character and stores it into a dynamically
@@ -9,7 +10,7 @@
  * @fd: File descriptor to read from (e.g., 0 for stdin)
  *
  * Return: Number of characters read (excluding null byte),
- *         -1 on failure or EOF.
+ *         -1 on failure or EOF with no characters read.
  */
 ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
@@ -32,15 +33,15 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 		if (r < 0)
 			return (-1);
 		if (r == 0)
-			return (-1);
-
+		{
+			return (i > 0 ? (ssize_t)i : -1);
+		}
 		if (i >= (*n - 1))
 		{
 			new_size = ((*n) * 2);
 			temp = malloc(new_size);
 			if (temp == NULL)
 				return (-1);
-
 			_memcpy(temp, *lineptr, *n);
 			free(*lineptr);
 			*lineptr = temp;

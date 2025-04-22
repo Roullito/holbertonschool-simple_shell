@@ -10,7 +10,11 @@
 int handle_builtin(char **argv)
 {
 	if (argv[0] && strcmp(argv[0], "exit") == 0)
+	{
+		if (argv[1])
+			exit(atoi(argv[1]));
 		return (-1);
+	}
 
 	return (0);
 }

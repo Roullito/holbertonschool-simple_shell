@@ -61,40 +61,47 @@ char *_strtok(char *str, const char *delim)
  * stock_args - Tokenizes a line into arguments
  *
  * @line: Pointer to the input line to split
-* Return: A pointer to the array of token strings (argv), or NULL on failure
+ * Return: A pointer to the array of token strings (argv), or NULL on failure
  */
 char **stock_args(char *line)
 {
 	int count = 0, i = 0;
 	char *cp_line, *cp_line2, *token, **argv;
 
+	if (line == NULL)
+		return (NULL);
 	cp_line = _strdup(line);
+	if (cp_line == NULL)
+		return (NULL);
 	token = _strtok(cp_line, " ");
-
 	while (token != NULL)
 	{
 		count++;
-		token = _strtok(NULL, " ");
-	}
-
+		token = _strtok(NULL, " "); }
 	argv = malloc(sizeof(char *) * (count + 1));
 	if (argv == NULL)
-		return (NULL);
-
+	{
+		free(cp_line);
+		return (NULL); }
 	free(cp_line);
-
 	cp_line2 = _strdup(line);
+	if (cp_line2 == NULL)
+	{
+		free(argv);
+		return (NULL); }
 	token = _strtok(cp_line2, " ");
-	while (token != NULL)
+	while (token != NULL && i < count)
 	{
 		argv[i] = _strdup(token);
 		if (argv[i] == NULL)
-			return (NULL);
-
+		{
+			while (--i >= 0)
+				free(argv[i]);
+			free(argv);
+			free(cp_line2);
+			return (NULL); }
 		i++;
-		token = _strtok(NULL, " ");
-	}
-
+		token = _strtok(NULL, " "); }
 	argv[i] = NULL;
 	free(cp_line2);
 	return (argv);
