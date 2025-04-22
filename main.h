@@ -43,7 +43,8 @@ int handle_builtin(char **argv, char **env);
 void free_argv(char **argv);
 int is_interactive(void);
 ssize_t get_input_line(char **line, size_t *len);
-void shell_loop(char **env, char *progname);
+int shell_loop(char **env, char *progname, int *exit_status);
 int handle_builtin_or_execute(char **argv, char **env, char *progname);
+int is_number(const char *str);
 
 #endif
