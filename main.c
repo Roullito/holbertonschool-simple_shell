@@ -20,19 +20,16 @@ ssize_t get_input_line(char **line, size_t *len)
 {
 	ssize_t r;
 
-	if (!line || !len)
-		return (-1);
+	r = getline(line, len, stdin);
+		if (r == -1)
+		{
+			if (is_interactive())
+				write(1, "\n", 1);
+			return (-1);
+		}
 
-	r = _getline(line, len, 0);
-	if (r == -1)
-	{
-		if (is_interactive())
-			write(1, "\n", 1);
-		return (-1);
-	}
-
-	if (r > 0 && (*line)[r - 1] == '\n')
-		(*line)[r - 1] = '\0';
+		if (r > 0 && (*line)[r - 1] == '\n')
+			(*line)[r - 1] = '\0';
 
 	return (r);
 }
@@ -49,10 +46,7 @@ ssize_t get_input_line(char **line, size_t *len)
 int handle_builtin_or_execute(char **argv, char **env, char *progname)
 {
 	char *cmd_path;
-	int exec_status;
-
-	if (!argv || !argv[0] || !env || !progname)
-		return (0);
+	int status = 0;
 
 	if (handle_builtin(argv) == -1)
 		return (-1);
@@ -60,8 +54,11 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		fprintf(stderr, "%s: 1: %s: not found\n", progname, argv[0]);
-		return (0);
+		write(2, progname, strlen(progname));
+		write(2, ": 1: ", 5);
+		write(2, argv[0], strlen(argv[0]));
+		write(2, ": not found\n", 12);
+		exit(127);
 	}
 
 	if (cmd_path != argv[0])
@@ -70,11 +67,9 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
 		argv[0] = cmd_path;
 	}
 
-	exec_status = execute(argv, env);
-	if (exec_status != 0)
-		return (0);
+	status = execute(argv, env);
 
-	return (0);
+	return (status);
 }
 
 /**
@@ -83,12 +78,13 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname)
  *
  * Return: Nothing
  */
-void shell_loop(char **env, char *progname)
+int shell_loop(char **env, char *progname)
 {
 	char *line = NULL;
-	char **argv = NULL;
+	char **argv;
 	size_t len = 0;
 	ssize_t r;
+	int code = 0;
 
 	while (1)
 	{
@@ -99,24 +95,22 @@ void shell_loop(char **env, char *progname)
 		if (r == -1)
 			break;
 
-		if (r == 0 || line[0] == '\0')
-			continue;
-
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			if (handle_builtin_or_execute(argv, env, progname) == -1)
+			code = handle_builtin_or_execute(argv, env, progname);
+			if (code == -1)
 			{
 				free_argv(argv);
 				break;
 			}
+
 			free_argv(argv);
 		}
-		else if (argv != NULL)
-			free_argv(argv);
 	}
-	if (line)
-		free(line);
+
+	free(line);
+	return (code);
 }
 
 /**
@@ -129,10 +123,6 @@ void shell_loop(char **env, char *progname)
  */
 int main(int ac, char **av, char **env)
 {
-	int status = 0;
-
 	(void)ac;
-	shell_loop(env, av[0]);
-
-	return (status);
+	return (shell_loop(env, av[0]));
 }
