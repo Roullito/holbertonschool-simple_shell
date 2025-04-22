@@ -12,19 +12,12 @@
 int handle_builtin(char **argv, char **env)
 {
 	int i;
-	int status = 0;
 
 	if (!argv || !argv[0])
 		return (0);
 
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		if (argv[1])
-			status = atoi(argv[1]);
-
-		free_argv(argv);
-
-		exit(status);
 		return (-1);
 	}
 	else if (strcmp(argv[0], "env") == 0)
