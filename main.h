@@ -9,6 +9,20 @@
 #include <sys/stat.h>
 #include <string.h>
 
+/**
+* struct builtin_s - Structure to map builtin command names to functions
+* @name: Name of the builtin command
+* @func: Function to execute the builtin
+*/
+typedef struct builtin_s
+{
+	char *name;
+	int (*func)(char **argv, char **env);
+} builtin_t;
+
+int builtin_exit(char **argv, char **env);
+int builtin_env(char **argv, char **env);
+
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 char *_strtok(char *str, const char *delim);
 pid_t fork(void);
