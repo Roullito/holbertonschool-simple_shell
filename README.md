@@ -128,7 +128,7 @@ file1 file2 shell.c
 Clone the repository by running the following command:
 
 ```bash
-git clone https://github.com/YourUsername/your-repo-name.git
+git clone https://github.com/Roullito/holbertonschool-simple_shell.git
 cd your-repo-name
 ```
 Replace `YourUsername/your-repo-name` with the actual path to this repository.
