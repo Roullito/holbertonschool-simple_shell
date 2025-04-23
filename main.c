@@ -60,7 +60,7 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname,
 	cmd_path = _which(argv[0], env);
 	if (cmd_path == NULL)
 	{
-		fprintf(stderr, "%s: command '%s' not found\n", progname, argv[0]);
+		fprintf(stderr, "%s: 1: %s: not found\n", progname, argv[0]);
 		return (127);
 	}
 
