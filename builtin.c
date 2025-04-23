@@ -40,7 +40,12 @@ int builtin_exit(char **argv, char **env, char *line)
 			exit_status = atoi(argv[1]);
 
 		else
-			exit_status = 2;
+		{
+			fprintf(stderr, "./hsh: 1: exit: Illegal number: %s\n", argv[1]);
+			free_argv(argv);
+			free(line);
+			exit(2);
+		}
 	}
 
 	free_argv(argv);
@@ -58,6 +63,7 @@ int builtin_exit(char **argv, char **env, char *line)
 int builtin_env(char **argv, char **env, char *line)
 {
 	int i;
+
 	(void)line;
 
 	if (argv[1])
@@ -65,6 +71,7 @@ int builtin_env(char **argv, char **env, char *line)
 
 	if (!env)
 		return (1);
+
 	for (i = 0; env[i]; i++)
 		printf("%s\n", env[i]);
 
