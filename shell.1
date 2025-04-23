@@ -1,56 +1,63 @@
-SHELL(1)                   User Commands                  SHELL(1)
+.TH SHELL 1 "April 2025" "Simple Shell" "User Commands"
+.SH NAME
+Simple Shell \- a basic UNIX command interpreter
+.SH SYNOPSIS
+.B ./shell
+.SH DESCRIPTION
+Simple Shell is a basic UNIX command-line interpreter built as a project
+for the Holberton School. It reads user input, parses it into arguments,
+and executes commands by searching for them in the directories listed
+in the
+.B PATH
+environment variable, or via a direct path if provided.
 
-NAME
-    Simple Shell - a basic UNIX command interpreter
+Simple Shell supports executing external programs and includes a few
+built-in commands.
 
-SYNOPSIS
-    ./shell
-
-DESCRIPTION
-    Simple Shell is a basic UNIX command-line interpreter built as a project
-    for the Holberton School. It reads user input, parses it into arguments,
-    and executes commands by searching for them in the directories listed
-    in the PATH environment variable, or via a direct path if provided.
-
-    Simple Shell supports executing external programs and includes a few
-    built-in commands.
-
-    Features:
-      - Command execution via PATH lookup (e.g., "ls", "echo", "cat", etc.)
-      - Direct command execution with absolute or relative paths (e.g., "/bin/ls")
-      - Passing arguments to commands
-      - Built-in "exit" to leave the shell with a specific status
-      - Built-in "env" to print the current environment variables
-
-BUILTINS
-    The shell provides the following built-in commands:
-
-    exit [status]
-        Exit the shell.  
-        If [status] is provided, the shell will exit with the given status.
-        If no status is specified, the shell exits with status 0.
-
-    env
-        Print the current environment variables to the standard output.
-
-EXIT STATUS
-    The shell returns the exit status of the last executed command.
-    If a built-in "exit [status]" is used, the shell exits with the specified status.
-    If a command cannot be found, the shell returns 127.
-    If an invalid exit status is provided, an error message is printed.
-
-FILES
-    No configuration files are required.
-
-AUTHORS
-    Written by Roullito and P-Y74.
-
-REPORTING BUGS
-    Report any issues or bugs to the project maintainers.
-
-COPYRIGHT
-    This is a free software project under the Holberton School curriculum.
-
-SEE ALSO
-    sh(1), bash(1), zsh(1)
-
+Features:
+.IP \[bu] 2
+Command execution via PATH lookup (e.g., "ls", "echo", "cat", etc.)
+.IP \[bu] 2
+Direct command execution with absolute or relative paths (e.g., "/bin/ls")
+.IP \[bu] 2
+Passing arguments to commands
+.IP \[bu] 2
+Built-in "exit" to leave the shell with a specific status
+.IP \[bu] 2
+Built-in "env" to print the current environment variables
+.SH BUILTINS
+The shell provides the following built-in commands:
+.PP
+.B exit [status]
+.br
+Exit the shell.  
+If
+.I status
+is provided, the shell will exit with the given status.
+If no status is specified, the shell exits with status 0.
+.PP
+.B env
+.br
+Print the current environment variables to the standard output.
+.SH EXIT STATUS
+The shell returns the exit status of the last executed command.
+.PP
+If a built-in
+.B "exit [status]"
+is used, the shell exits with the specified status.
+.PP
+If a command cannot be found, the shell returns 127.
+.PP
+If an invalid exit status is provided, an error message is printed.
+.SH FILES
+No configuration files are required.
+.SH AUTHORS
+Written by Roullito and P-Y74.
+.SH REPORTING BUGS
+Report any issues or bugs to the project maintainers.
+.SH COPYRIGHT
+This is a free software project under the Holberton School curriculum.
+.SH SEE ALSO
+.BR sh (1),
+.BR bash (1),
+.BR zsh (1)
