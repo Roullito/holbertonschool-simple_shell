@@ -10,6 +10,12 @@ This project consists of creating a simple UNIX command interpreter, similar to 
 
 ---
 
+## 🛠 Architecture Overview
+Here is a flowchart illustrating the internal workflow of the Simple Shell:
+
+![Simple Shell Flowchart](assets/flowchart.png)
+
+---
 ## 📑 Table of Contents
 
 - [Learning Objectives](#learning-objectives)
