@@ -101,12 +101,13 @@ int shell_loop(char **env, char *progname, int *exit_status)
 		if (argv != NULL && argv[0] != NULL)
 		{
 			cmd_status = handle_builtin_or_execute(argv, env, progname, line);
-			*exit_status = cmd_status;
 			if (cmd_status == -1)
 			{
 				free_argv(argv);
 				break;
 			}
+			else if (cmd_status != 0)
+				*exit_status = cmd_status;
 			free_argv(argv);
 		}
 		else if (argv != NULL)
