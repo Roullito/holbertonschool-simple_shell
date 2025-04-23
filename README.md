@@ -19,6 +19,7 @@ This project consists of creating a simple UNIX command interpreter, similar to 
   - [Interactive Mode](#interactive-mode)
   - [Non-Interactive Mode](#non-interactive-mode)
   - [Example with `cat`](#example-with-cat)
+- [Installation](#isntallation)
 - [Project Files](#project-files)
   - [1. _memcpy.c](#1-memcpyc)
   - [2. _strcpy.c](#2-strcpyc)
@@ -117,6 +118,42 @@ $ cat commands.txt | ./hsh
 file1 file2 shell.c
 file1 file2 shell.c
 ```
+
+---
+
+## 📥[Installation](#installation)
+
+### 1. Clone the repository
+
+Clone the repository by running the following command:
+
+```bash
+git clone https://github.com/YourUsername/your-repo-name.git
+cd your-repo-name
+```
+### 1. Clone the repository
+
+Replace `YourUsername/your-repo-name` with the actual path to this repository.
+
+### 2. Install the man page
+
+We provide a script to automatically install the custom man page for our Simple Shell.
+
+Run the following command:
+
+```bash
+./install_manpage.sh
+```
+This will:
+
+- Copy `shell.1` to your local man directory (`/usr/local/share/man/man1/`).
+- Update the man database.
+- Allow you to type `man shell` from anywhere to access the manual.
+
+**Note:**  
+You might need `sudo` permissions to install the man page, depending on your system configuration.
+
+---
 
 ## 🗂[Project Files](#project-files)
 
