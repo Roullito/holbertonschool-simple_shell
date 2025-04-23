@@ -131,8 +131,6 @@ Clone the repository by running the following command:
 git clone https://github.com/YourUsername/your-repo-name.git
 cd your-repo-name
 ```
-### 1. Clone the repository
-
 Replace `YourUsername/your-repo-name` with the actual path to this repository.
 
 ### 2. Install the man page
