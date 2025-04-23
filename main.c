@@ -43,7 +43,7 @@ ssize_t get_input_line(char **line, size_t *len)
  * 0 otherwise.
 */
 int handle_builtin_or_execute(char **argv, char **env, char *progname,
-	char *line)
+	char *line, int *exit_status)
 {
 	char *cmd_path;
 	int exec_status;
@@ -52,9 +52,9 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname,
 		return (0);
 
 	if (strcmp(argv[0], "env") == 0)
-		return (builtin_env(argv, env, line));
+		return (builtin_env(argv, env, line, *exit_status));
 
-	if (handle_builtin(argv, env, line) == -1)
+	if (handle_builtin(argv, env, line, *exit_status) == -1)
 		return (-1);
 
 	cmd_path = _which(argv[0], env);
@@ -100,7 +100,8 @@ int shell_loop(char **env, char *progname, int *exit_status)
 		argv = stock_args(line);
 		if (argv != NULL && argv[0] != NULL)
 		{
-			cmd_status = handle_builtin_or_execute(argv, env, progname, line);
+			cmd_status = handle_builtin_or_execute(argv, env, progname, line,
+				exit_status);
 			if (cmd_status == -1)
 			{
 				free_argv(argv);

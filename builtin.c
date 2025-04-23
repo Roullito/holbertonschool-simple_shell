@@ -28,9 +28,9 @@ int _is_number(char *str)
  *
  * Return: -1 to indicate shell termination
  */
-int builtin_exit(char **argv, char **env, char *line)
+int builtin_exit(char **argv, char **env, char *line, int last_status)
 {
-	int exit_status = 0;
+	int exit_status = last_status;
 
 	(void)env;
 
@@ -60,11 +60,12 @@ int builtin_exit(char **argv, char **env, char *line)
  *
  * Return: 1 to indicate the command was handled
  */
-int builtin_env(char **argv, char **env, char *line)
+int builtin_env(char **argv, char **env, char *line, int last_status)
 {
 	int i;
 
 	(void)line;
+	(void)last_status;
 
 	if (argv[1])
 		return (0);
@@ -85,7 +86,7 @@ int builtin_env(char **argv, char **env, char *line)
  *
  * Return: -1 if "exit", 1 if a builtin was handled, 0 otherwise
  */
-int handle_builtin(char **argv, char **env, char *line)
+int handle_builtin(char **argv, char **env, char *line, int last_status)
 {
 	int i, ret;
 
@@ -102,7 +103,7 @@ int handle_builtin(char **argv, char **env, char *line)
 	{
 		if (strcmp(argv[0], builtins[i].name) == 0)
 		{
-			ret = builtins[i].func(argv, env, line);
+			ret = builtins[i].func(argv, env, line, last_status);
 			return (ret);
 		}
 	}
