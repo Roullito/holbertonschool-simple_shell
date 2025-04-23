@@ -35,7 +35,8 @@ int execute(char **argv, char **env)
 			return (1);
 		}
 
-		return (WEXITSTATUS(status) == 0 ? 0 : 2);
+		if(WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
 
 	return (1);

@@ -51,6 +51,9 @@ int handle_builtin_or_execute(char **argv, char **env, char *progname,
 	if (!argv || !argv[0] || !env || !progname)
 		return (0);
 
+	if (strcmp(argv[0], "env") == 0)
+		return (builtin_env(argv, env, line));
+
 	if (handle_builtin(argv, env, line) == -1)
 		return (-1);
 
