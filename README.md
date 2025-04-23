@@ -19,7 +19,7 @@ This project consists of creating a simple UNIX command interpreter, similar to 
   - [Interactive Mode](#interactive-mode)
   - [Non-Interactive Mode](#non-interactive-mode)
   - [Example with `cat`](#example-with-cat)
-- [Installation](#isntallation)
+- [Installation](#installation)
 - [Project Files](#project-files)
   - [1. _memcpy.c](#1-memcpyc)
   - [2. _strcpy.c](#2-strcpyc)
