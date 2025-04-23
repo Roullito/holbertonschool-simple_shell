@@ -1,0 +1,56 @@
+SHELL(1)                   User Commands                  SHELL(1)
+
+NAME
+    Simple Shell - a basic UNIX command interpreter
+
+SYNOPSIS
+    ./shell
+
+DESCRIPTION
+    Simple Shell is a basic UNIX command-line interpreter built as a project
+    for the Holberton School. It reads user input, parses it into arguments,
+    and executes commands by searching for them in the directories listed
+    in the PATH environment variable, or via a direct path if provided.
+
+    Simple Shell supports executing external programs and includes a few
+    built-in commands.
+
+    Features:
+      - Command execution via PATH lookup (e.g., "ls", "echo", "cat", etc.)
+      - Direct command execution with absolute or relative paths (e.g., "/bin/ls")
+      - Passing arguments to commands
+      - Built-in "exit" to leave the shell with a specific status
+      - Built-in "env" to print the current environment variables
+
+BUILTINS
+    The shell provides the following built-in commands:
+
+    exit [status]
+        Exit the shell.  
+        If [status] is provided, the shell will exit with the given status.
+        If no status is specified, the shell exits with status 0.
+
+    env
+        Print the current environment variables to the standard output.
+
+EXIT STATUS
+    The shell returns the exit status of the last executed command.
+    If a built-in "exit [status]" is used, the shell exits with the specified status.
+    If a command cannot be found, the shell returns 127.
+    If an invalid exit status is provided, an error message is printed.
+
+FILES
+    No configuration files are required.
+
+AUTHORS
+    Written by Roullito and P-Y74.
+
+REPORTING BUGS
+    Report any issues or bugs to the project maintainers.
+
+COPYRIGHT
+    This is a free software project under the Holberton School curriculum.
+
+SEE ALSO
+    sh(1), bash(1), zsh(1)
+
