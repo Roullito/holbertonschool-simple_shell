@@ -41,7 +41,7 @@ int builtin_exit(char **argv, char **env, char *line, int last_status)
 
 		else
 		{
-			fprintf(stderr, "./hsh: 1: exit: Illegal number: %s\n", argv[1]);
+			fprintf(stderr, "./shell: 1: exit: Illegal number: %s\n", argv[1]);
 			free_argv(argv);
 			free(line);
 			exit(2);
